@@ -72,7 +72,7 @@ def update_todo(todo_id: int, todo: TodoCreate, db: Session = Depends(get_db()))
     return db_todo
 
 @app.delete("/todo/{todp_id}")
-def delete_todo(todo_id: int, db: Session = Depends(get_db()))
+def delete_todo(todo_id: int, db: Session = Depends(get_db())):
     db_todo = db.query(Todo).filter(Todo.id == todo_id).first()
     if not db_todo:
         raise HTTPException(status_code=404, details="Todo not found")
