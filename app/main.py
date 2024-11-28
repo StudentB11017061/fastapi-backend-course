@@ -32,7 +32,7 @@ class TodoResponse(TodoBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 def get_db():
     db = SessionLocal()
@@ -42,7 +42,7 @@ def get_db():
         db.close()
 
 @app.post ("/todos", response_model=TodoResponse)
-def create_todo(todo: TodoCreate, db: Session = Depends(get_db())):
+def create_todo(todo: TodoCreate, db: Session = Depends(get_db)):
     db_todo = Todo(**todo.dict())
     db.add(db_todo)
     db.commit()
@@ -50,18 +50,18 @@ def create_todo(todo: TodoCreate, db: Session = Depends(get_db())):
     return db_todo
 
 @app.get("/todos", response_model=list[TodoResponse])
-def read_todos(db: Session = Depends(get_db())):
+def read_todos(db: Session = Depends(get_db)):
     return db.query(Todo).all()
 
 @app.get("/todo/{todo_id}", response_model=TodoResponse)
-def read_todo(todo_id: int, db: Session = Depends(get_db())):
+def read_todo(todo_id: int, db: Session = Depends(get_db)):
     db_todo = db.query(Todo).filter(Todo.id == todo_id).first()
     if not db_todo:
         raise HTTPException(status_code=404, details="Todo not found")
     return db_todo
 
 @app.put("/todo/{todo_id}", response_model=TodoResponse)
-def update_todo(todo_id: int, todo: TodoCreate, db: Session = Depends(get_db())):
+def update_todo(todo_id: int, todo: TodoCreate, db: Session = Depends(get_db)):
     db_todo = db.query(Todo).filter(Todo.id == todo_id).first()
     if not db_todo:
         raise HTTPException(status_code=404, details="Todo not found")
@@ -72,7 +72,7 @@ def update_todo(todo_id: int, todo: TodoCreate, db: Session = Depends(get_db()))
     return db_todo
 
 @app.delete("/todo/{todp_id}")
-def delete_todo(todo_id: int, db: Session = Depends(get_db())):
+def delete_todo(todo_id: int, db: Session = Depends(get_db)):
     db_todo = db.query(Todo).filter(Todo.id == todo_id).first()
     if not db_todo:
         raise HTTPException(status_code=404, details="Todo not found")
