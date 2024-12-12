@@ -13,7 +13,7 @@ class Todo(Base):
 class User(Base):
     __tablename__="users"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String(50), nullable=False, unique=True)
-    password = Column(String(100), nullable=False)
-    email = Column(String(100), unique=True)
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, nullable=False)
+    password = Column(String, nullable=False)
+    email = Column(String, unique=True, nullable=False)
