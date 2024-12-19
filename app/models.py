@@ -17,3 +17,9 @@ class User(Base):
     username = Column(String, nullable=False)
     password = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
+    priority = Column(Integer, default=1)
+    #給另外一個人改
+class User(Base):
+    __tablename__="Users"
+    id = Column(Integer, primary_key=True, index=True)
+    
