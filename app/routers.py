@@ -52,3 +52,12 @@ def delete_todo(todo_id: int, db: Session = Depends(get_db)):
     db.delete(db_todo)
     db.commit()
     return {"detail": "Todo delete successfully"}
+
+#B added
+@app.post("/todos/")
+def create_todo(todo: TodoBase, db: Session = Depends(get_db)):
+    new_todo = models.Todo(**todo.dict())
+    db.add(new_todo)
+    db.commit()
+    db.refresh(new_todo)
+    return new_todo
